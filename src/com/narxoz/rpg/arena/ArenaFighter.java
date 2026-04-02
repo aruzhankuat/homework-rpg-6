@@ -1,56 +1,31 @@
 package com.narxoz.rpg.arena;
 
-public class ArenaFighter {
-    private final String name;
-    private int health;
-    private final int maxHealth;
+public class ArenaFighter implements ArenaOpponent {
+    private String name;
+    private int hp;
+    private int attackPower;
+    private int armor;
     private double dodgeChance;
-    private final int blockRating;
-    private final int armorValue;
-    private final int attackPower;
-    private int healPotions;
+    private double blockChance;
 
-    public ArenaFighter(String name, int health, double dodgeChance,
-                        int blockRating, int armorValue, int attackPower, int healPotions) {
+    public ArenaFighter(String name, int hp, int attackPower, int armor, double dodgeChance, double blockChance) {
         this.name = name;
-        this.health = health;
-        this.maxHealth = health;
-        this.dodgeChance = dodgeChance;
-        this.blockRating = blockRating;
-        this.armorValue = armorValue;
+        this.hp = hp;
         this.attackPower = attackPower;
-        this.healPotions = healPotions;
+        this.armor = armor;
+        this.dodgeChance = dodgeChance;
+        this.blockChance = blockChance;
     }
 
     public String getName() { return name; }
-    public int getHealth() { return health; }
-    public int getMaxHealth() { return maxHealth; }
-    public double getDodgeChance() { return dodgeChance; }
-    public int getBlockRating() { return blockRating; }
-    public int getArmorValue() { return armorValue; }
+    public int getHp() { return hp; }
     public int getAttackPower() { return attackPower; }
-    public int getHealPotions() { return healPotions; }
+    public int getArmor() { return armor; }
+    public double getDodgeChance() { return dodgeChance; }
+    public double getBlockChance() { return blockChance; }
 
-    public void takeDamage(int amount) {
-        // TODO: Reduce health by amount; clamp health to a minimum of 0.
-        health -= amount;
-    }
-
-    public void heal(int amount) {
-        // TODO: Increase health by amount; do not exceed maxHealth.
-        // TODO: Decide what happens when healPotions runs out — should healing be blocked?
-        health += amount;
-        healPotions--;
-    }
-
-    public void modifyDodgeChance(double delta) {
-        // TODO: Add delta to dodgeChance.
-        // TODO: Decide whether to clamp dodgeChance between 0.0 and 1.0.
-        dodgeChance += delta;
-    }
-
-    public boolean isAlive() {
-        // TODO: Return whether the fighter still has health remaining.
-        return health > 0;
-    }
+    @Override
+    public void takeDamage(int amount) { this.hp -= amount; }
+    @Override
+    public void restoreHp(int amount) { this.hp += amount; }
 }
