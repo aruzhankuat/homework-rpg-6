@@ -1,20 +1,13 @@
 package com.narxoz.rpg.chain;
-
 import com.narxoz.rpg.arena.ArenaFighter;
 
 public class BlockHandler extends DefenseHandler {
-    private final double blockPercent;
-
-    public BlockHandler(double blockPercent) {
-        this.blockPercent = blockPercent;
-    }
-
     @Override
-    public void handle(int incomingDamage, ArenaFighter target) {
-        // TODO: Calculate how much damage is blocked: (int)(incomingDamage * blockPercent).
-        // TODO: Subtract the blocked amount from incomingDamage to get the remainder.
-        // TODO: Print a block message showing how much was blocked.
-        // TODO: Always pass the remainder to the next handler (block reduces but never stops the chain).
-        // Design question: what should happen if the remainder reaches 0 or below?
+    public void handle(DamageRequest request, ArenaFighter fighter) {
+        if (Math.random() < fighter.getBlockChance()) {
+            request.amount /= 2;
+            System.out.println("[Block] " + fighter.getName() + " blocked half damage! Remaining: " + request.amount);
+        }
+        if (next != null && request.amount > 0) next.handle(request, fighter);
     }
 }
